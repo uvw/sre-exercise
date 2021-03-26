@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-exercise
+  labels:
+    name: sre-exercise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: sre-exercise
+  template:
+    metadata:
+      labels:
+        name: sre-exercise
+    spec:
+      containers:
+      - name: service
+        image: uvwu/sre-exercise:v0.0.2
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+            scheme: HTTP
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+            scheme: HTTP
+        resources:
+          requests:
+            memory: 100M
+          limits:
+            memory: 100M
